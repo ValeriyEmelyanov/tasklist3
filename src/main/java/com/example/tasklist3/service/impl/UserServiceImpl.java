@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUserName(String username) {
+    public User getByUsername(String username) {
         return null;
     }
 
