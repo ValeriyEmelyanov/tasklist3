@@ -22,8 +22,12 @@ public class TaskRowMapper {
 
     private static Task createTaskFromRow(ResultSet rs) throws SQLException {
         Task task = new Task();
+        String title = rs.getString("task_title");
+        if (title == null) {
+            return null;
+        }
         task.setId(rs.getLong("task_id"));
-        task.setTitle(rs.getString("task_title"));
+        task.setTitle(title);
         task.setDescription(rs.getString("task_description"));
         task.setStatus(Status.valueOf(rs.getString("task_status")));
         Timestamp expirationDate = rs.getTimestamp("task_expiration_date");
@@ -37,7 +41,10 @@ public class TaskRowMapper {
     public static List<Task> mapRows(ResultSet rs) {
         List<Task> tasks = new ArrayList<>();
         while (rs.next()) {
-            tasks.add(createTaskFromRow(rs));
+            Task task = createTaskFromRow(rs);
+            if (task != null) {
+                tasks.add(task);
+            }
         }
         return tasks;
     }

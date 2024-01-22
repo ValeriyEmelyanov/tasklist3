@@ -1,5 +1,6 @@
 package com.example.tasklist3.repository.impl;
 
+import com.example.tasklist3.domain.exception.ResourceMappingException;
 import com.example.tasklist3.domain.exception.ResourceNotFoundException;
 import com.example.tasklist3.domain.task.Task;
 import com.example.tasklist3.repository.DataSourceConfig;
@@ -40,11 +41,11 @@ public class TaskRepositoryImpl implements TaskRepository {
                    t.status as task_status
             FROM tasks t
                 JOIN users_tasks ut on t.id = ut.task_id
-            WHERE ut.user_id = ?;""";
+            WHERE ut.user_id = ?""";
 
     private final String ASSIGN = """
             INSERT INTO users_tasks (task_id, user_id)
-            VALUES (?, ?);""";
+            VALUES (?, ?)""";
 
     private final String UPDATE = """
             UPDATE tasks
@@ -64,7 +65,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Optional<Task> findById(Long id) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID);
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()) {
@@ -77,7 +79,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public List<Task> findAllByUserId(Long userId) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_BY_USER_ID);
             statement.setLong(1, userId);
             try (ResultSet rs = statement.executeQuery()) {
@@ -90,7 +93,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void assignToUserById(Long taskId, Long userId) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(ASSIGN);
             statement.setLong(1, taskId);
             statement.setLong(2, userId);
@@ -102,7 +106,8 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void update(Task task) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE);
             statement.setString(1, task.getTitle());
             if (task.getDescription() == null) {
@@ -119,13 +124,14 @@ public class TaskRepositoryImpl implements TaskRepository {
             statement.setLong(5, task.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new ResourceNotFoundException("Error while updating task.");
+            throw new ResourceMappingException("Error while updating task.");
         }
     }
 
     @Override
     public void create(Task task) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(CREATE, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, task.getTitle());
             if (task.getDescription() == null) {
@@ -145,13 +151,14 @@ public class TaskRepositoryImpl implements TaskRepository {
                 task.setId(rs.getLong(1));
             }
         } catch (SQLException e) {
-            throw new ResourceNotFoundException("Error while updating task.");
+            throw new ResourceMappingException("Error while updating task.");
         }
     }
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = dataSourceConfig.getConnection()) {
+        try {
+            Connection connection = dataSourceConfig.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE);
             statement.setLong(1, id);
             statement.executeUpdate();

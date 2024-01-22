@@ -20,7 +20,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public JwtResponse login(JwtRequest loginRequest) {
+    public JwtResponse login(final JwtRequest loginRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         User user = userService.getByUsername(loginRequest.getUsername());
         JwtResponse jwtResponse = new JwtResponse();

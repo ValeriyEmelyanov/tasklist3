@@ -6,6 +6,7 @@ import com.example.tasklist3.service.TaskService;
 import com.example.tasklist3.service.UserService;
 import com.example.tasklist3.web.dto.task.TaskDto;
 import com.example.tasklist3.web.dto.user.UserDto;
+import com.example.tasklist3.web.dto.validation.OnCreate;
 import com.example.tasklist3.web.dto.validation.OnUpdate;
 import com.example.tasklist3.web.mappers.TaskMapper;
 import com.example.tasklist3.web.mappers.UserMapper;
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/tasks")
-    public TaskDto createTask(@PathVariable Long userId, @Validated(OnUpdate.class) @RequestBody TaskDto dto) {
+    public TaskDto createTask(@PathVariable Long userId, @Validated(OnCreate.class) @RequestBody TaskDto dto) {
         Task task = taskMapper.toEntity(dto);
         Task createdTask = taskService.create(task, userId);
         return taskMapper.toDto(createdTask);
