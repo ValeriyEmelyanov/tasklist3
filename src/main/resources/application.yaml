@@ -1,4 +1,12 @@
 spring:
+  cache:
+    type: redis
+    cache-names: redis-cache
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: MjFyM2ZzZGNydGRocnRyZXdy
   datasource:
     url: jdbc:postgresql://localhost:5432/tasklist3?currentSchema=tasklist
     username: postgres
