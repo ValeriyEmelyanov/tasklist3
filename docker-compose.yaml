@@ -12,7 +12,7 @@ services:
   app:
     build:
       context: .
-    container_name: tasklist
+    container_name: tasklist3
     depends_on:
       - db
       - minio
