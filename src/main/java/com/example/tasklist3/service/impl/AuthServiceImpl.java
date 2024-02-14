@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public JwtResponse refresh(String refreshToken) {
+    public JwtResponse refresh(final String refreshToken) {
         return jwtTokenProvider.refreshUserTokens(refreshToken);
     }
 
