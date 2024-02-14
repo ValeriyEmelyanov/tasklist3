@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
 
-    public String createAccessToken(Long userId, String username, Set<Role> roles) {
+    public String createAccessToken(final Long userId, final String username, final Set<Role> roles) {
         Claims claims = Jwts.claims()
                 .subject(username)
                 .add("id", userId)
@@ -54,13 +54,13 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    private List<String> resolveRoles(Set<Role> roles) {
+    private List<String> resolveRoles(final Set<Role> roles) {
         return roles.stream()
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }
 
-    public String createRefreshToken(Long userId, String username) {
+    public String createRefreshToken(final Long userId, final String username) {
         Claims claims = Jwts.claims()
                 .subject(username)
                 .add("id", userId)
@@ -73,7 +73,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public JwtResponse refreshUserTokens(String refreshToken) {
+    public JwtResponse refreshUserTokens(final String refreshToken) {
         if (!validateToken(refreshToken)) {
             throw new AccessDeniedException();
         }
@@ -88,7 +88,7 @@ public class JwtTokenProvider {
         return jwtResponse;
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(final String token) {
         Jws<Claims> claims = Jwts
                 .parser()
                 .verifyWith(key)
@@ -97,7 +97,7 @@ public class JwtTokenProvider {
         return claims.getPayload().getExpiration().after(new Date());
     }
 
-    private Long getId(String token) {
+    private Long getId(final String token) {
         return Jwts
                 .parser()
                 .verifyWith(key)
@@ -107,7 +107,7 @@ public class JwtTokenProvider {
                 .get("id", Long.class);
     }
 
-    private String getUsername(String token) {
+    private String getUsername(final String token) {
         return Jwts
                 .parser()
                 .verifyWith(key)
@@ -117,7 +117,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(final String token) {
         String username = getUsername(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
