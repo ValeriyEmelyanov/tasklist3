@@ -3,7 +3,6 @@ package com.example.tasklist3.domain.task;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

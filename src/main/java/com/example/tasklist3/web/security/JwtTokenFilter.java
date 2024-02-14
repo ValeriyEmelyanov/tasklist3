@@ -18,9 +18,9 @@ public class JwtTokenFilter extends GenericFilterBean {
 
     @Override
     @SneakyThrows
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
-                         FilterChain filterChain) {
+    public void doFilter(final ServletRequest servletRequest,
+                         final ServletResponse servletResponse,
+                         final FilterChain filterChain) {
         String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
 
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
