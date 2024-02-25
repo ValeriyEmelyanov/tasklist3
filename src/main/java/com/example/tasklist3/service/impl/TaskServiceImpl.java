@@ -23,7 +23,6 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final UserService userService;
     private final ImageService imageService;
 
     @Override
@@ -59,11 +58,11 @@ public class TaskServiceImpl implements TaskService {
             key = "#task.id"
     )
     public Task create(final Task task, final Long userId) {
-        task.setStatus(Status.TODO);
+        if (task.getStatus() == null) {
+            task.setStatus(Status.TODO);
+        }
         taskRepository.save(task);
-        User user = userService.getById(userId);
-        user.getTasks().add(task);
-        userService.update(user);
+        taskRepository.assignTask(userId, task.getId());
         return task;
     }
 
@@ -78,9 +77,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @CacheEvict(value = "TaskService::getById", key = "#id")
     public void uploadImage(final Long id, final TaskImage image) {
-        Task task = getById(id);
         String filename = imageService.upload(image);
-        task.getImages().add(filename);
-        taskRepository.save(task);
+        taskRepository.addImage(id, filename);
     }
 }
