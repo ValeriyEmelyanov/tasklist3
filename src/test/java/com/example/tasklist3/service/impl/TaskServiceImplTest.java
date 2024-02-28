@@ -8,7 +8,6 @@ import com.example.tasklist3.domain.task.TaskImage;
 import com.example.tasklist3.repository.TaskRepository;
 import com.example.tasklist3.repository.UserRepository;
 import com.example.tasklist3.service.ImageService;
-import com.example.tasklist3.service.TaskService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
