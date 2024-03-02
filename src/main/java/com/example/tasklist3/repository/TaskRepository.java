@@ -27,7 +27,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Modifying
     @Query(value = """
             INSERT INTO tasks_images (task_id, image)
-                        VALUES (:id, :fileName)
+                        VALUES (:id, :filename)
             """, nativeQuery = true)
     void addImage(@Param("id") Long id, @Param("filename") String filename);
 }
