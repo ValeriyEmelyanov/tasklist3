@@ -21,9 +21,9 @@ public class LocalDateTimeCoercing implements Coercing<LocalDateTime, String> {
 
     @Override
     public @Nullable String serialize(
-            @NotNull Object dataFetcherResult,
-            @NotNull GraphQLContext graphQLContext,
-            @NotNull Locale locale) throws CoercingSerializeException {
+            final @NotNull Object dataFetcherResult,
+            final @NotNull GraphQLContext graphQLContext,
+            final @NotNull Locale locale) throws CoercingSerializeException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSXXX", Locale.ENGLISH);
         return formatter.format(
                 Date.from(
@@ -36,17 +36,18 @@ public class LocalDateTimeCoercing implements Coercing<LocalDateTime, String> {
 
     @Override
     public @Nullable LocalDateTime parseValue(
-            @NotNull Object input,
-            @NotNull GraphQLContext graphQLContext,
-            @NotNull Locale locale) throws CoercingParseValueException {
+            final @NotNull Object input,
+            final @NotNull GraphQLContext graphQLContext,
+            final @NotNull Locale locale) throws CoercingParseValueException {
         return LocalDateTime.parse((String) input);
     }
 
     @Override
     public @Nullable LocalDateTime parseLiteral(
-            @NotNull Value<?> input,
-            @NotNull CoercedVariables variables,
-            @NotNull GraphQLContext graphQLContext, @NotNull Locale locale) throws CoercingParseLiteralException {
+            final @NotNull Value<?> input,
+            final @NotNull CoercedVariables variables,
+            final @NotNull GraphQLContext graphQLContext,
+            final @NotNull Locale locale) throws CoercingParseLiteralException {
         return LocalDateTime.parse(((StringValue) input).getValue());
     }
 
